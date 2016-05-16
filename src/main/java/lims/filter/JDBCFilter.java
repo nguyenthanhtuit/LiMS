@@ -16,11 +16,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import lims.conn.ConnectionUtils;
 import lims.utils.MyUtils;
 
 @WebFilter(filterName = "jdbcFilter", urlPatterns = { "/*" })
 public class JDBCFilter implements Filter {
+	Logger log = Logger.getLogger(JDBCFilter.class);
 
 	public JDBCFilter() {
 
@@ -33,7 +36,7 @@ public class JDBCFilter implements Filter {
 
 	// Check the target of the request is a servlet?
 	public boolean needJDBCFilter(HttpServletRequest request) {
-		System.out.println("JDBC filter");
+		log.info("JDBC filter");
 		//
 		// Servlet Url-pattern: /spath/*
 		//
@@ -52,7 +55,7 @@ public class JDBCFilter implements Filter {
 		Map<String, ? extends ServletRegistration> servletRegistration = request.getServletContext()
 				.getServletRegistrations();
 
-		// Tập hợp tất cả các Servlet trong WebApp của bạn.
+		// Tập hợp tất cả các servlet trong WebApp của bạn
 		Collection<? extends ServletRegistration> value = servletRegistration.values();
 		for (ServletRegistration sr : value) {
 			Collection<String> mappings = sr.getMappings();
@@ -78,16 +81,17 @@ public class JDBCFilter implements Filter {
 			System.out.println("open connection for " + req.getServletPath());
 			Connection conn = null;
 			try {
-				// Tạo đối tượng Connection kết nối database.
+				// Táº¡o Ä‘á»‘i tÆ°á»£ng Connection káº¿t ná»‘i database.
 				conn = ConnectionUtils.getConnection();
-				// Sét tự động commit false, để chủ động điều khiển.
+				// SÃ©t tá»± Ä‘á»™ng commit false, Ä‘á»ƒ chá»§ Ä‘á»™ng Ä‘iá»�u
+				// khiá»ƒn.
 				conn.setAutoCommit(false);
-				// Lưu trữ vào attribute của request.
+				// LÆ°u trá»¯ vÃ o attribute cá»§a request.
 				MyUtils.storeConnection(request, conn);
 				// cho phep request di tiep
 				chain.doFilter(request, response);
 
-				// Gọi commit() để commit giao dịch với DB.
+				// Gá»�i commit() Ä‘á»ƒ commit giao dá»‹ch vá»›i DB.
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
@@ -100,7 +104,7 @@ public class JDBCFilter implements Filter {
 		// Với các request thông thường (image,css,html,..)
 		// không cần mở connection, cho tiếp tục.
 		else {
-			// cho phép request đi tiếp.
+			// Cho phép request đi tiếp.
 			chain.doFilter(request, response);
 		}
 
