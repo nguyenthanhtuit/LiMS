@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginServlet
@@ -26,8 +27,14 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginedUser") == null){
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/page/mainpages/loginPage.jsp");
 		dispatcher.forward(request, response);
+		}
+		else{
+			response.sendRedirect(request.getContextPath());
+		}
 	}
 
 	/**

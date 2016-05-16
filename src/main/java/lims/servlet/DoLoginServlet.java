@@ -35,8 +35,8 @@ public class DoLoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String userName = request.getParameter("userName");
-		String password = request.getParameter("password");
+		String userName = request.getParameter("userName").trim();
+		String password = request.getParameter("password").trim();
 		String rememberMeStr = request.getParameter("rememberMe");
 		boolean remenberMe = "Y".equals(rememberMeStr);
 		
