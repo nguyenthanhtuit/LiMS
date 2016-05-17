@@ -14,6 +14,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import lims.beans.UserAccount;
 import lims.utils.DBUtils;
 import lims.utils.MyUtils;
@@ -26,6 +28,8 @@ import lims.utils.MyUtils;
 @WebFilter(filterName = "cookieFilter", urlPatterns = { "/*" })
 public class CookieFilter implements Filter {
  
+	Logger logger = Logger.getLogger(CookieFilter.class);
+	
    public CookieFilter() {
    }
  
@@ -42,29 +46,34 @@ public class CookieFilter implements Filter {
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
            throws IOException, ServletException {
-	   System.out.println("Cookie filter");
        HttpServletRequest req = (HttpServletRequest) request;
        HttpSession session = req.getSession();
  
+       String userName1 = MyUtils.getUserNameinCookie(req);
+       logger.info("test function get user name in cookie: "+userName1);
        UserAccount userInSession = MyUtils.getUserLogined(session);
-       System.out.println(userInSession);
+       
        // Đang login.
        if (userInSession != null) {
-           session.setAttribute("COOKIE_CHECKED", "CHECKED");
+    	   logger.info("hien tai ddang login");
+           session.setAttribute("COOKIE_CHECKED", "CHECKED_LOGIN");
            chain.doFilter(request, response);
            return;
        }
  
        // Đã được tạo trong JDBCFilter.
        Connection conn = MyUtils.getStoreConnection(request);
- 
+       if(userInSession == null){
+    	   logger.info("chua login va co chuoi kn"+conn);
+       }
        // Có cần kiểm tra Cookie ko?
        String checked = (String) session.getAttribute("COOKIE_CHECKED");
        
-       if (checked == null && conn != null) {
+       if (checked != "CHECKED" && conn != null) {
            String userName = MyUtils.getUserNameinCookie(req);
+           logger.info("user name"+userName);
            try {
-               UserAccount user = DBUtils.findUser(conn, userName);
+               UserAccount user = DBUtils.findUser(conn,userName);
                MyUtils.storeLoginUser(session, user);
            } catch (SQLException e) {
                e.printStackTrace();
@@ -72,7 +81,7 @@ public class CookieFilter implements Filter {
            // Đã kiểm tra cookie
            session.setAttribute("COOKIE_CHECKED", "CHECKED");
        }
-       System.out.println(checked);
+       
        chain.doFilter(request, response);
    }
  

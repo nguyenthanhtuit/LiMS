@@ -1,16 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.lims</groupId>
-  <artifactId>LiMS</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>LiMS Maven Webapp</name>
-  <packaging>war</packaging>
-  <properties>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-</properties>
-  <url>http://maven.apache.org</url>
-  
-  <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.lims</groupId>
+	<artifactId>LiMS</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>LiMS Maven Webapp</name>
+	<packaging>war</packaging>
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+	<url>http://maven.apache.org</url>
+
+	<build>
 		<finalName>LiMS</finalName>
 		<plugins>
 			<plugin>
@@ -24,10 +25,10 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
-	
-	<!-- Servlet -->
+
+		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -35,6 +36,7 @@
 		</dependency>
 
 		<!-- Log4j -->
+		<!-- http://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -54,13 +56,13 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-	
-			<!-- mongodb java driver -->
+
+		<!-- mongodb java driver -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.13.0</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>
