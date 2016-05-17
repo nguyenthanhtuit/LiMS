@@ -39,8 +39,8 @@ public class DBUtils {
 			String password = rs.getString("Password");
 			String gender = rs.getString("GENDER");
 			UserAccount user = new UserAccount();
-			user.setUserName(rs.getString(userName));
-			user.setPassword(rs.getString(password));
+			user.setUserName(userName);
+			user.setPassword(password);
 			user.setGender(gender);
 			return user;
 		}
