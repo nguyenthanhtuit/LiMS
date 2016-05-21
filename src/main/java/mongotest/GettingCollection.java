@@ -15,12 +15,12 @@ public class GettingCollection {
 		DBCollection dept = db.getCollection("Deparment");
 		 System.out.println("Collection: "+dept);
 		 
-		 long rowCount = dept.count();
-		 System.out.println("Document count:"+rowCount);
-		 
-		 Set<String> collections = db.getCollectionNames();
-		 for(String collection:collections){
-			 System.out.println(collection);
-		 }
+//		 long rowCount = dept.count();
+//		 System.out.println("Document count:"+rowCount);
+//		 
+//		 Set<String> collections = db.getCollectionNames();
+//		 for(String collection:collections){
+//			 System.out.println(collection);
+//		 }
 	}
 }

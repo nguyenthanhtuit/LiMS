@@ -50,6 +50,7 @@ public class CookieFilter implements Filter {
        HttpSession session = req.getSession();
  
        String userName1 = MyUtils.getUserNameinCookie(req);
+       //check cookie neu lúc m` lấy có cookie mà 0 có session thì sau lúc đóng browser mở lại 
        logger.info("test function get user name in cookie: "+userName1);
        UserAccount userInSession = MyUtils.getUserLogined(session);
        

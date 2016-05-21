@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>LiMS2</display-name>
- 
- <!--  filter -->
   <filter-mapping>
     <filter-name>jdbcFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
   <filter-mapping>
     <filter-name>cookieFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <!-- end filter -->
-  
   <welcome-file-list>
     <welcome-file>home</welcome-file>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  
-  <!-- Mapping -->
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>lims.servlet.LoginServlet</servlet-class>
@@ -45,12 +38,11 @@
     <url-pattern>/doLogin</url-pattern>
   </servlet-mapping>
   <servlet>
-  <servlet-name>Logout</servlet-name>
-  <servlet-class>lims.servlet.LogoutServlet</servlet-class>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>lims.servlet.LogoutServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  <servlet-name>Logout</servlet-name>
-  <url-pattern>/logout</url-pattern>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
-  <!-- end mapping -->
 </web-app>

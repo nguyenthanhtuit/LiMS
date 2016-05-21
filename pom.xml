@@ -6,9 +6,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>LiMS Maven Webapp</name>
 	<packaging>war</packaging>
-	<properties>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-	</properties>
 	<url>http://maven.apache.org</url>
 
 	<build>
@@ -56,7 +53,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		
 		<!-- mongodb java driver -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
