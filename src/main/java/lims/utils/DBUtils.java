@@ -4,10 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import lims.beans.Product;
 import lims.beans.UserAccount;
 
 public class DBUtils {
@@ -20,11 +17,15 @@ public class DBUtils {
 
 		ResultSet rs = pstm.executeQuery();
 		if (rs.next()) {
-			String gender = rs.getString("GENDER");
+			String mail = rs.getString("MAIL");
+			String firstName = rs.getString("FIRSTNAME");
+			String lastName = rs.getString("LASTNAME");
 			UserAccount user = new UserAccount();
 			user.setUserName(userName);
 			user.setPassword(password);
-			user.setGender(gender);
+			user.setMail(mail);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
 			return user;
 		}
 		return null;
@@ -37,76 +38,54 @@ public class DBUtils {
 		ResultSet rs = pstm.executeQuery();
 		if (rs.next()) {
 			String password = rs.getString("Password");
-			String gender = rs.getString("GENDER");
+			String mail = rs.getString("MAIL");
+			String firstName = rs.getString("FIRSTNAME");
+			String lastName = rs.getString("LASTNAME");
 			UserAccount user = new UserAccount();
 			user.setUserName(userName);
 			user.setPassword(password);
-			user.setGender(gender);
+			user.setMail(mail);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
 			return user;
 		}
 		return null;
 	}
 
-	public static List<Product> queryProduct(Connection conn) throws SQLException {
-		String sql = "select * from product";
-		PreparedStatement pstm = conn.prepareStatement(sql);
-		ResultSet rs = pstm.executeQuery();
-		List<Product> listProduct = new ArrayList<Product>();
-		while (rs.next()) {
-			String code = rs.getString("CODE");
-			String name = rs.getString("NAME");
-			float price = rs.getFloat("PRICE");
-			Product product = new Product();
-			product.setCode(code);
-			product.setName(name);
-			product.setPrice(price);
-			listProduct.add(product);
+	public static boolean insertAccount(Connection conn, UserAccount user) {
+		String sql = "INSERT INTO `limsdb`.`USER_ACCOUNT` (`USER_NAME`, `PASSWORD`, `MAIL`, `FIRSTNAME`, `LASTNAME`) VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement pstm;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, user.getUserName());
+			pstm.setString(2, user.getPassword());
+			pstm.setString(3, user.getMail());
+			pstm.setString(4, user.getFirstName());
+			pstm.setString(5, user.getLastName());
+			pstm.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return listProduct;
+
+		return false;
 	}
 
-	public static Product findProduct(Connection conn, String code) throws SQLException {
-		String sql = "Select * from Product a where a.Code=?";
-		PreparedStatement pstm = conn.prepareStatement(sql);
-		pstm.setString(1, code);
-		ResultSet rs = pstm.executeQuery();
-		while (rs.next()) {
-			String name = rs.getString("NAME");
-			float price = rs.getFloat("PRICE");
-			Product product = new Product(code, name, price);
-			return product;
+	public static boolean checkMailExist(Connection conn, String email) {
+		String sql = "SELECT MAIL FROM USER_ACCOUNT WHERE MAIL = ?";
+		PreparedStatement pstm;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, email);
+			pstm.executeQuery();
+			ResultSet rs = pstm.executeQuery();
+			if(rs.getString("MAIL")!=null&&rs.getString("MAIL")!="")
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
-		return null;
-	}
-
-	public static void updateProduct(Connection conn, Product product) throws SQLException {
-		String sql = "Update Product set Name =?, Price=? where Code=?";
-		PreparedStatement pstm = conn.prepareStatement(sql);
-		pstm.setString(1, product.getName());
-		pstm.setFloat(2, product.getPrice());
-		pstm.setString(3, product.getCode());
-		pstm.executeUpdate();
-	}
-
-	public static void insertProduct(Connection conn, Product product) throws SQLException {
-		String sql = "Insert into Product(Code, Name,Price) values (?,?,?)";
-
-		PreparedStatement pstm = conn.prepareStatement(sql);
-
-		pstm.setString(1, product.getCode());
-		pstm.setString(2, product.getName());
-		pstm.setFloat(3, product.getPrice());
-
-		pstm.executeUpdate();
-	}
-
-	public static void deleteProduct(Connection conn, String code) throws SQLException {
-		String sql = "Delete Product where Code= ?";
-
-		PreparedStatement pstm = conn.prepareStatement(sql);
-
-		pstm.setString(1, code);
-
-		pstm.executeUpdate();
+		return false;
 	}
 }

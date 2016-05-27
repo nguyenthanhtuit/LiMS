@@ -16,8 +16,5 @@ public class TestConnection {
 		while(rs.next()){
 			System.out.println("dung");
 		}
-		rs.close();
-		stm.close();
-		conn.close();
 	}
 }

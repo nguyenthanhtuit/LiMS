@@ -15,7 +15,7 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>Login</servlet-name>
-    <servlet-class>lims.servlet.LoginServlet</servlet-class>
+    <servlet-class>lims.servlet.login.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
@@ -31,7 +31,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>DoLogin</servlet-name>
-    <servlet-class>lims.servlet.DoLoginServlet</servlet-class>
+    <servlet-class>lims.servlet.login.DoLoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>DoLogin</servlet-name>
@@ -39,7 +39,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>Logout</servlet-name>
-    <servlet-class>lims.servlet.LogoutServlet</servlet-class>
+    <servlet-class>lims.servlet.login.LogoutServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Logout</servlet-name>

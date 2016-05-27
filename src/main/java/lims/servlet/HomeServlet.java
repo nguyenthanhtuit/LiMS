@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns={"/home"})
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -30,5 +30,8 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/page/mainpages/homePage.jsp");
 		dispatcher.forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);;
 	}
 }

@@ -1,5 +1,6 @@
 package lims.utils;
 
+import java.security.MessageDigest;
 import java.sql.Connection;
 
 import javax.servlet.ServletRequest;
@@ -12,7 +13,6 @@ import lims.beans.UserAccount;
 
 public class MyUtils {
 	public static final String ATT_NAME_CONNECTION = "ATTRIBUTE_FOR_CONNECTION";
-	public static final String ATT_NAME_USER_NAME = "ATTRIBUTE_FOR_STORE_USER_NAME_IN_COOKIE";
 
 	// set connection in request attribute
 	public static void storeConnection(ServletRequest request, Connection conn) {
@@ -27,20 +27,19 @@ public class MyUtils {
 
 	// set session for user
 	public static void storeLoginUser(HttpSession session, UserAccount loginedUser) {
-		session.setAttribute("loginedUser", loginedUser);
+		session.setAttribute(SessionConstant.LOGIN_USER, loginedUser);
 	}
 
 	// get user from session user
 	public static UserAccount getUserLogined(HttpSession session) {
-		UserAccount loginedUser = (UserAccount) session.getAttribute("loginedUser");
+		UserAccount loginedUser = (UserAccount) session.getAttribute(SessionConstant.LOGIN_USER);
 		return loginedUser;
 	}
 
 	// save user in cookie
 
 	public static void storeUserCookie(HttpServletResponse response, UserAccount user) {
-		System.out.println("Store user cookie");
-		Cookie cookieUserName = new Cookie(ATT_NAME_USER_NAME, user.getUserName());
+		Cookie cookieUserName = new Cookie(CookieConstant.NAME_USER, user.getUserName());
 		cookieUserName.setMaxAge(24 * 60 * 60);
 		response.addCookie(cookieUserName);
 	}
@@ -50,7 +49,7 @@ public class MyUtils {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (ATT_NAME_USER_NAME.equals(cookie.getName())) {
+				if (CookieConstant.NAME_USER.equals(cookie.getName())) {
 					return cookie.getValue();
 				}
 			}
@@ -60,8 +59,27 @@ public class MyUtils {
 	
 	// delete cookie of user
 	public static void deleteUserCookie(HttpServletResponse response){
-		Cookie cookieUserName = new Cookie(ATT_NAME_USER_NAME, null);
+		Cookie cookieUserName = new Cookie(CookieConstant.NAME_USER, null);
 		cookieUserName.setMaxAge(0);
 		response.addCookie(cookieUserName);
+	}
+	
+	
+	public static String convertToMD5(String arg) {
+		String hashed_key = "";
+
+		try {
+			byte[] intext = arg.getBytes();
+			StringBuffer sb = new StringBuffer();
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			byte[] md5rslt = md5.digest(intext);
+			for (int i = 0; i < md5rslt.length; i++) {
+				sb.append(String.format("%02x", 0xff & md5rslt[i]));
+			}
+			hashed_key = sb.toString();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		return hashed_key;
 	}
 }

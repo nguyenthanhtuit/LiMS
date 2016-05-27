@@ -77,7 +77,6 @@ public class JDBCFilter implements Filter {
 		//
 		HttpServletRequest req = (HttpServletRequest) request;
 		if (needJDBCFilter(req)) {
-			log.info("open connection for " + req.getServletPath());
 			Connection conn = null;
 			try {
 				// Táº¡o Ä‘á»‘i tÆ°á»£ng Connection káº¿t ná»‘i database.
@@ -92,7 +91,6 @@ public class JDBCFilter implements Filter {
 
 				// Gá»�i commit() Ä‘á»ƒ commit giao dá»‹ch vá»›i DB.
 			} catch (ClassNotFoundException e) {
-				log.error("loi cho nay"+e);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new ServletException();
@@ -110,7 +108,7 @@ public class JDBCFilter implements Filter {
 	}
 
 	public void init(FilterConfig arg0) throws ServletException {
-		
+
 	}
 
 }

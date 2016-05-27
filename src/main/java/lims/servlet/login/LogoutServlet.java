@@ -1,4 +1,4 @@
-package lims.servlet;
+package lims.servlet.login;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import lims.utils.MyUtils;
+import lims.utils.SessionConstant;
 
 /**
  * Servlet implementation class LogoutServlet
@@ -31,7 +32,7 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		session.removeAttribute("loginedUser");
+		session.removeAttribute(SessionConstant.LOGIN_USER);
 		MyUtils.deleteUserCookie(response);
 		try {
 			Thread.sleep(1000);
