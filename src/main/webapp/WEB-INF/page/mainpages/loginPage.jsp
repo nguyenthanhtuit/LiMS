@@ -1,6 +1,6 @@
 <div class="modal fade" id="signup-modal" role="dialog">
 	<div class="modal-dialog">
-<form action="doSignUp" method="post">
+<form action="doSignUp" method="POST">
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header" style="text-align: center;">
@@ -11,17 +11,17 @@
 				<div class="dialog-sigup-item">
 						<p>First Name :</p>
 						<input type="text" name="firstName" class="form-control"
-							placeholder="First Name">
+							placeholder="First Name" value="${user.firstName}">
 				</div>
 				<div class="dialog-sigup-item">
 						<p>Last Name :</p>
 						<input type="text" name="lastName" class="form-control"
-							placeholder="Last Name">
+							placeholder="Last Name" value="${user.lastName}">
 				</div>
 				<div class="dialog-sigup-item">
 						<p>User Name :</p>
 						<input type="text" name="userName" class="form-control"
-							placeholder="Password">
+							placeholder="User Name" value="${user.userName}">
 				</div>
 				<div class="dialog-sigup-item">
 						<p>Password :</p>
@@ -36,7 +36,7 @@
 				<div class="dialog-sigup-item">
 						<p>Email :</p>
 						<input type="text" name="email" class="form-control"
-							placeholder="Email">
+							placeholder="Email" value="${user.lastName}">
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -53,7 +53,7 @@
 	<div class="login-form">
 	<p class="notify">${mess }</p>
 		<div class="login-item-logo">
-			<img src="html/images/logo.png" alt="">
+			<img src="${pageContext.request.contextPath}/html/images/logo.png" alt="">
 		</div>
 		
 		<div class="login-item-input">

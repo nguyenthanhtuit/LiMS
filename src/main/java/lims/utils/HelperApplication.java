@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import lims.beans.UserAccount;
+import lims.conn.ConnectionUtils;
 
 public class HelperApplication {
 	public  static String getPathRestPage(HttpServletRequest request, HttpServletResponse  response){
@@ -40,5 +41,15 @@ public class HelperApplication {
 	public static boolean checkEmailExist(HttpServletRequest request, HttpServletResponse response, String mail){
 		Connection conn = MyUtils.getStoreConnection(request);
 		return DBUtils.checkMailExist(conn, mail);
+	}
+	public static boolean newAccount(HttpServletRequest request, HttpServletResponse response, UserAccount user){
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return DBUtils.insertAccount(conn, user);
 	}
 }

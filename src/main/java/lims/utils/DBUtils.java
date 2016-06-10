@@ -53,7 +53,7 @@ public class DBUtils {
 	}
 
 	public static boolean insertAccount(Connection conn, UserAccount user) {
-		String sql = "INSERT INTO `limsdb`.`USER_ACCOUNT` (`USER_NAME`, `PASSWORD`, `MAIL`, `FIRSTNAME`, `LASTNAME`) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO USER_ACCOUNT(USER_NAME, PASSWORD, MAIL, FIRSTNAME, LASTNAME) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pstm;
 		try {
 			pstm = conn.prepareStatement(sql);
@@ -66,9 +66,10 @@ public class DBUtils {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 
-		return false;
+		
 	}
 
 	public static boolean checkMailExist(Connection conn, String email) {
@@ -79,12 +80,12 @@ public class DBUtils {
 			pstm.setString(1, email);
 			pstm.executeQuery();
 			ResultSet rs = pstm.executeQuery();
-			if(rs.getString("MAIL")!=null&&rs.getString("MAIL")!="")
-			return true;
+			if (rs.next()) {
+				
+					return true;
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
 		return false;
 	}

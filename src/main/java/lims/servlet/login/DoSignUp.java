@@ -1,7 +1,6 @@
 package lims.servlet.login;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -11,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import lims.beans.UserAccount;
-import lims.utils.DBUtils;
 import lims.utils.HelperApplication;
-import lims.utils.MyUtils;
 
 /**
  * Servlet implementation class DoSignUp
@@ -22,7 +21,7 @@ import lims.utils.MyUtils;
 @WebServlet("/doSignUp")
 public class DoSignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	Logger logger=Logger.getLogger(this.getClass());
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -44,52 +43,61 @@ public class DoSignUp extends HttpServlet {
 		String confirmPassword = request.getParameter("confirmPassword").trim();
 		String email = request.getParameter("email").trim();
 		UserAccount user = new UserAccount(userName, password, email, firstName, lastName);
-		Connection conn = MyUtils.getStoreConnection(request);
-		
+//		UserAccount user = new UserAccount("htmz", "htmz", "htmz", "htmz", "htmz");
+		logger.info(user.toString());
 		StringBuffer mess = new StringBuffer();
-		
-		
-		
 		boolean hasEror = false;
-		try {
-			if (HelperApplication.checkUserNameExist(request, response, userName)) {
-				hasEror = true;
-				mess.append("User Name existed! </br>");
-			}
-		} catch (SQLException e) {
-			hasEror = true;
-			e.printStackTrace();
-		}
-		if (HelperApplication.checkEmailExist(request, response, email)) {
-			hasEror = true;
-			mess.append("Email existed! </br>");
-		}
-		if (password.equals(confirmPassword) == false) {
-			hasEror = true;
-			mess.append("Passwords confirm don't match");
-		}
 
-		if (hasEror) {
+		if (user.getUserName() == "" || user.getPassword() == "" || user.getMail() == "") {
+			mess.append("Fill full the information please! </br>");
 			String messS = mess.toString();
 			request.setAttribute("mess", messS);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/page/navigates/loginPage.jsp");
 			dispatcher.forward(request, response);
-		}
-		else
-		{
-			if(DBUtils.insertAccount(conn, user)){
-				mess.append("Signup success !");
-				String messS = mess.toString();
-				request.setAttribute("mess", messS);
+
+		} else {
+			try {
+				if (HelperApplication.checkUserNameExist(request, response, userName)) {
+					hasEror = true;
+					mess.append("User Name existed! </br>");
+				}
+			} catch (SQLException e) {
+				hasEror = true;
+				e.printStackTrace();
+			}
+			if (HelperApplication.checkEmailExist(request, response, user.getMail())) {
+				hasEror = true;
+				mess.append("Email existed! </br>");
+			}
+			if (password.equals(confirmPassword) == false) {
+				hasEror = true;
+				mess.append("Passwords confirm don't match");
+			}
+
+			if (hasEror) {
 				request.setAttribute("user", user);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/page/navigates/loginPage.jsp");
-				dispatcher.forward(request, response);
-			}else{
-				mess.append("Signup failed! The field is not empty!");
 				String messS = mess.toString();
 				request.setAttribute("mess", messS);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/page/navigates/loginPage.jsp");
 				dispatcher.forward(request, response);
+			} else {
+				hasEror = HelperApplication.newAccount(request, response, user);
+				if (hasEror) {
+					mess.append("Signup success !");
+					String messS = mess.toString();
+					request.setAttribute("mess", messS);
+					request.setAttribute("user", user);
+					RequestDispatcher dispatcher = request
+							.getRequestDispatcher("/WEB-INF/page/navigates/loginPage.jsp");
+					dispatcher.forward(request, response);
+				} else {
+					 mess.append("Signup failed!");
+					 String messS = mess.toString();
+					 request.setAttribute("mess", messS);
+					 RequestDispatcher dispatcher =
+					 request.getRequestDispatcher("/WEB-INF/page/navigates/loginPage.jsp");
+					 dispatcher.forward(request, response);
+				}
 			}
 		}
 	}

@@ -6,29 +6,28 @@ import java.sql.SQLException;
 import lims.beans.UserAccount;
 import lims.conn.ConnectionUtils;
 import lims.utils.DBUtils;
-import lims.utils.HelperApplication;
 
 public class TestSignUp {
 	public static void main(String[] args) {
 		Connection conn = null;
-		UserAccount user = new UserAccount("hello", "hello", "mail", "name", "name");
+		UserAccount user = new UserAccount("htmz", "htmz", "htmz", "htmz", "htmz");
 		try {
 			conn = ConnectionUtils.getConnection();
-			
+			System.out.println(user);
+			System.out.println(conn);
 			boolean result = DBUtils.insertAccount(conn, user);
-			
+
 			if (result) {
 				System.out.println("Sigup success!");
-			}
-			else {
+			} else {
 				System.out.println("Sigup faild");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			ConnectionUtils.closeQuietly(conn);
 		}
-		
+
 	}
+
 }

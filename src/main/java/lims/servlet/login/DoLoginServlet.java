@@ -35,8 +35,8 @@ public class DoLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session=request.getSession();
-		String pathPage = (String)session.getAttribute("pathName");
+		HttpSession session = request.getSession();
+		String pathPage = (String) session.getAttribute("pathName");
 		String userName = request.getParameter("userName").trim();
 		String password = request.getParameter("password").trim();
 		String rememberMeStr = request.getParameter("rememberMe");
@@ -82,7 +82,8 @@ public class DoLoginServlet extends HttpServlet {
 			} else {
 				MyUtils.deleteUserCookie(response);
 			}
-			RequestDispatcher dispatcher=request.getRequestDispatcher(pathPage);
+			System.out.println(pathPage);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(pathPage);
 			dispatcher.forward(request, response);
 		}
 	}
