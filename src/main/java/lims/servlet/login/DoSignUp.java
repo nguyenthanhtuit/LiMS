@@ -43,7 +43,6 @@ public class DoSignUp extends HttpServlet {
 		String confirmPassword = request.getParameter("confirmPassword").trim();
 		String email = request.getParameter("email").trim();
 		UserAccount user = new UserAccount(userName, password, email, firstName, lastName);
-//		UserAccount user = new UserAccount("htmz", "htmz", "htmz", "htmz", "htmz");
 		logger.info(user.toString());
 		StringBuffer mess = new StringBuffer();
 		boolean hasEror = false;
